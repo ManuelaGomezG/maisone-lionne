@@ -1,0 +1,43 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1, h2, a, p, footer{
+    font-family: "Kaisei Tokumin", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+h1, h2 {
+    color:black;
+    text-align: center;
+    font-size: 30px;
+}
+
+h3, h4, h5, h6 {
+    color:black;
+    text-align: center;
+    margin: 20px;
+    padding: auto;
+}
+
+.navbar {
+    color: black;
+
+}
+
+navbar-nav img {
+    align-items: start;
+    height: 80px;
+}
+
+
+.cards-productos {
+    height: 50px;
+    
+}
+
+
+
