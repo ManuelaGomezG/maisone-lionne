@@ -70,7 +70,7 @@ switch (producto){
          console.log("Su total es de: $ " + total);
       } else {
          console.log("No se selecciono ningun producto valido");
-}
+} 
 
 --
 
@@ -94,10 +94,12 @@ if (producto >= 1 && producto <= 9) {
   console.log("Producto inválido. Ingresa un número del 1 al 9.");
 }
 
-
-
-
 */
+
+
+
+/*
+
 
 const PRODUCTOS = [
   {
@@ -193,3 +195,155 @@ let carritoCompra = () => {
 };
 
 carritoCompra();
+
+
+*/
+
+const PRODUCTOS = [
+  {
+    producto: 1,
+    nombre: "Proyecto Integral",
+    color: "No Aplica",
+    precio: 5000,
+  },
+  {
+    producto: 2,
+    nombre: "Asesoria",
+    color: "No Aplica",
+    precio: 1500,
+  },
+  {
+    producto: 3,
+    nombre: "Florero Blues",
+    color: "azul",
+    precio: 2000,
+  },
+  {
+    producto: 4,
+    nombre: "Jarron Jade",
+    color: "verde",
+    precio: 3000,
+  },
+  {
+    producto: 5,
+    nombre: "Jarron Shell",
+    color: "blanco",
+    precio: 3000,
+  },
+  {
+    producto: 6,
+    nombre: "Jarron Twin",
+    color: "transparente",
+    precio: 2000,
+  },
+  {
+    producto: 7,
+    nombre: "Lampara Bliss",
+    color: "amarilla",
+    precio: 2200,
+  },
+  {
+    producto: 8,
+    nombre: "Lampara Klimt",
+    color: "dorada",
+    precio: 1800,
+  },
+  {
+    producto: 9,
+    nombre: "Lampara Old Times",
+    color: "negra",
+    precio: 1500,
+  },
+];
+
+let totalFinal = 0;
+let contadorCarrito = 0;
+
+let calcularTotal = (precio, cantidad) => precio * cantidad;
+
+const mostrarProductos = () => {
+  const contenedor = document.getElementById('productos');
+  PRODUCTOS.forEach(producto => {
+    const div = document.createElement('div');
+    div.classList.add('card');
+    div.innerHTML = `
+      <strong>${producto.nombre}</strong> (${producto.color}) - Precio: $${producto.precio}
+      <input type="number" id="cantidad-${producto.producto}" min="1" placeholder="Cantidad">
+      <button onclick="agregarAlCarrito(${producto.producto})">Agregar al Carrito</button>`;
+    contenedor.appendChild(div);
+  });
+};
+
+const agregarAlCarrito = (productoId) => {
+  const cantidadInput = document.getElementById(`cantidad-${productoId}`);
+  const cantidad = parseInt(cantidadInput.value);
+  
+  if (cantidad > 0) {
+    const seleccionado = PRODUCTOS.find(p => p.producto === productoId);
+    const totalProducto = calcularTotal(seleccionado.precio, cantidad);
+    totalFinal += totalProducto;
+
+
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    const itemEnCarrito = carrito.find(item => item.producto === productoId);
+    
+    if (itemEnCarrito) {
+      itemEnCarrito.cantidad += cantidad;
+    } else {
+      carrito.push({ producto: productoId, nombre: seleccionado.nombre, cantidad });
+    }
+    
+    
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+
+    console.log(`Agregado: ${seleccionado.nombre} - Cantidad: ${cantidad} - Total: $${totalProducto}`);
+    
+    document.getElementById('total').innerText = totalFinal;
+
+  
+    contadorCarrito += cantidad;
+    document.getElementById('contadorCarrito').innerText = `Carrito: ${contadorCarrito} productos`;
+
+    cantidadInput.value = '';
+  } else {
+    alert("Por favor ingresa una cantidad vaalida.");
+  }
+};
+
+const cargarCarrito = () => {
+  const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  carrito.forEach(item => {
+    totalFinal += calcularTotal(PRODUCTOS[item.producto - 1].precio, item.cantidad);
+    contadorCarrito += item.cantidad;
+  });
+
+  document.getElementById('total').innerText = totalFinal;
+  document.getElementById('contadorCarrito').innerText = `Carrito: ${contadorCarrito} productos`;
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  cargarCarrito();
+  mostrarProductos();
+});
+
+document.getElementById('limpiarCarrito').addEventListener('click', () => {
+  totalFinal = 0;
+  contadorCarrito = 0;
+  document.getElementById('total').innerText = totalFinal;
+  document.getElementById('contadorCarrito').innerText = `Carrito: ${contadorCarrito} productos`;
+  
+  localStorage.removeItem('carrito');
+  alert("Carrito limpiado.");
+});
+
+
+
+
+
+
+
+
+
+
+
+
